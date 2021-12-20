@@ -5,7 +5,6 @@ import java.io.IOException;
 
 class Launcher{
 
-
         public static void main(String[] args) throws IOException{
 
             Serveur cam = new Serveur(Integer.parseInt(args[0]));
@@ -15,9 +14,5 @@ class Launcher{
 
             cam.createServeur();
 
-
-
         }
-
-
 }

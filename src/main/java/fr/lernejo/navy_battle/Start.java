@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 
 public class Start implements HttpHandler{
 
+    //L'erreure
     private void erreur(String err, HttpExchange inf) throws IOException {
 
         if(err.equals("Not FOUND"))  {
@@ -24,11 +25,10 @@ public class Start implements HttpHandler{
                 os.write(err.getBytes());
             }
         }
-
     }
 
 
-
+    //Le test
     private boolean testJson(InputStream tjson) throws IOException, ParseException {
         JSONParser js = new JSONParser();
         JSONObject msg = (JSONObject)js.parse(
@@ -44,6 +44,7 @@ public class Start implements HttpHandler{
         return false;
     }
 
+    //L'envoie de message
     private void envoiMessage(HttpExchange info) throws IOException {
         int port = info.getHttpContext().getServer().getAddress().getPort();
         JSONObject renvoi = new JSONObject();
@@ -58,7 +59,6 @@ public class Start implements HttpHandler{
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-
         if(exchange.getRequestMethod().equals("POST")){
             try {
                 if(testJson(exchange.getRequestBody())){
@@ -71,8 +71,5 @@ public class Start implements HttpHandler{
             erreur("Bad Request", exchange);
         }else{
             erreur("Not FOUND", exchange);
-        }
-    }
-
-
+        }}
 }

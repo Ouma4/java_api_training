@@ -15,10 +15,12 @@ public class Serveur {
     int port = 4598;
     String stock = "";
     String enemy ="http://localhost:2323";
+
     Serveur(int secondPort){
         this.port = secondPort;
 
     }
+
     private void post(){
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest post = HttpRequest.newBuilder()
@@ -38,23 +40,17 @@ public class Serveur {
     public void getUrl(String reqUrl){
         this.stock = reqUrl;
     }
+
     public void createServeur () throws IOException{
 
         HttpServer ser = HttpServer.create(new InetSocketAddress(this.port), 1);
-
-
         ser.createContext("/ping",new Call_Handler());
-
         ser.createContext("/api/game/start", new Start());
-
+        ser.createContext("/api/game/fire", new Fire());
         ser.setExecutor(Executors.newFixedThreadPool(1));
-
         ser.start();
-
         if(!stock.equals("")){
             post();
         }
-
     }
-
 }
