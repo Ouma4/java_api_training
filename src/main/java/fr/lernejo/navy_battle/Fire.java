@@ -13,10 +13,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Fire implements HttpHandler {
-    int restBateaux = 3;
-    String resulta = "miss";
-    String enemy ="http://localhost:2323";
 
+    final String enemy ="http://localhost:2323";
     //Methode pour savoir si le bateaux a était touche ou pas
     private boolean touch(String Cellule){
         return false;
@@ -28,21 +26,21 @@ public class Fire implements HttpHandler {
     }
 
     //Methode pour savoire le rest des bateaux
-    private boolean resteBataux(){
-        if(this.restBateaux == 0){
+    private boolean resteBataux(int restBateaux){
+        if(restBateaux == 0){
             return false;
         }
         return true;
     }
 
     //Les information envoyé à l'ennemie.
-    private void renvInfoEnemy(){
+    private void renvInfoEnemy(String resultat, int restBateaux){
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest post = HttpRequest.newBuilder()
             .uri(URI.create(this.enemy + "/api/game/start"))
             .setHeader("Accept", "application/json")
             .setHeader("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString("{\"consequence\":\""+resulta+"\", \"shipLeft\":\""+resteBataux()+"\"}"))
+            .POST(HttpRequest.BodyPublishers.ofString("{\"consequence\":\""+resultat+"\", \"shipLeft\":\""+resteBataux(restBateaux)+"\"}"))
             .build();
         try {
             client.send(post, HttpResponse.BodyHandlers.ofString());
@@ -67,16 +65,20 @@ public class Fire implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+         int restBateaux = 3;
+         String resulta = "miss";
+
+
         if(exchange.getRequestMethod().equals("GET")){
             String C = Cellule(exchange);
             if(touch(C)){
-                this.resulta ="hit";
+                resulta ="hit";
                 if(coulBateaux(C)){
-                    this.resulta="sunk";
+                   resulta="sunk";
                     restBateaux --;
                 }
             }
-            renvInfoEnemy();
+            renvInfoEnemy(resulta, restBateaux);
         }
     }
 }

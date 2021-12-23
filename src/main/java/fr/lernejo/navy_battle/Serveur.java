@@ -12,12 +12,13 @@ import com.sun.net.httpserver.HttpServer;
 
 public class Serveur {
 
-    int port = 4598;
-    String stock = "";
-    String enemy ="http://localhost:2323";
+    final int port;
+    final String url;
+    final String enemy ="http://localhost:2323";
 
-    Serveur(int secondPort){
+    Serveur(int secondPort,String url){
         this.port = secondPort;
+        this.url = url;
 
     }
 
@@ -37,9 +38,7 @@ public class Serveur {
         }
     }
 
-    public void getUrl(String reqUrl){
-        this.stock = reqUrl;
-    }
+
 
     public void createServeur () throws IOException{
 
@@ -49,7 +48,7 @@ public class Serveur {
         ser.createContext("/api/game/fire", new Fire());
         ser.setExecutor(Executors.newFixedThreadPool(1));
         ser.start();
-        if(!stock.equals("")){
+        if(!url.equals("")){
             post();
         }
     }

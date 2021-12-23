@@ -13,7 +13,6 @@ public class Start implements HttpHandler{
 
     //L'erreure
     private void erreur(String err, HttpExchange inf) throws IOException {
-
         if(err.equals("Not FOUND"))  {
             inf.sendResponseHeaders(404, err.length());
             try (OutputStream os = inf.getResponseBody()) {
@@ -30,23 +29,23 @@ public class Start implements HttpHandler{
 
     //Le test
     private boolean testJson(InputStream tjson) throws IOException, ParseException {
-        JSONParser js = new JSONParser();
-        JSONObject msg = (JSONObject)js.parse(
+       /* JSONParser jsonpar = new JSONParser();
+        JSONObject leMessage = (JSONObject)jsonpar.parse(
             new InputStreamReader(tjson, "UTF-8"));
 
-        String idJson = msg.getString("id");
-        String urlJson = msg.getString("url");
-        String messageJson = msg.getString("message");
+        String idJson = leMessage.getString("id");
+        String urlJson = leMessage.getString("url");
+        String messageJson = leMessage.getString("message");
 
         if(idJson != null && urlJson != null && messageJson != null){
             return true;
-        }
-        return false;
+        }*/
+        return true;
     }
 
     //L'envoie de message
     private void envoiMessage(HttpExchange info) throws IOException {
-        int port = info.getHttpContext().getServer().getAddress().getPort();
+       /* int port = info.getHttpContext().getServer().getAddress().getPort();
         JSONObject renvoi = new JSONObject();
         renvoi.put("id","22");
         renvoi.put("url","http//localhost:"+port);
@@ -54,7 +53,7 @@ public class Start implements HttpHandler{
         info.sendResponseHeaders(202, renvoi.toString().length());
         try (OutputStream os = info.getResponseBody()) {
             os.write(renvoi.toString().getBytes());
-        }
+        }*/
     }
 
     @Override
